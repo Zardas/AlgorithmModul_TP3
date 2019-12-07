@@ -363,18 +363,18 @@ int main() {
     
     seuil /= 100;
     
-    int n = 2;
-    vector<int> arrayModif = nFirstNumber(arr, n);
+    int k = 2;
+    vector<int> arrayModif = nFirstNumber(arr, k);
     float amountCovered = getAmountCovered(arr, arrayModif);
-    cout << "Considering the first " << n << " prime numbers. Amount covered : " << amountCovered << endl;
+    cout << "Calcul avec les " << k << " premiers nombre premiers. Montant couvert : " << amountCovered*100 << "%" << endl;
     while(amountCovered < seuil) {
-        n++;
-        vector<int> arrayModif = nFirstNumber(arr, n);
+        k++;
+        vector<int> arrayModif = nFirstNumber(arr, k);
         amountCovered = getAmountCovered(arr, arrayModif);
-        cout << "Considering the first " << n << " prime numbers. Amount covered : " << amountCovered << endl;
+        cout << "Calcul avec les " << k << " premiers nombre premiers. Montant couvert : " << amountCovered*100 << "%" << endl;
     }
     
-    
+    cout << "A partir des " << k << " premiers nombres premiers, nous pouvons déterminer si n est premier à " << amountCovered*100 << "% de chance" << endl;
     
     
     
