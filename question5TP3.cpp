@@ -1,4 +1,4 @@
-
+//https://www.onlinegdb.com/online_c++_compiler
 // C++ program to print all combination  
 // of size r in an array of size n  
 #include<bits/stdc++.h> 
@@ -13,7 +13,7 @@ void combinationUtil(vector<int> arr, vector<int> data, int start, int end, int 
 // all combinations of size r  
 // in arr[] of size n. This function 
 // mainly uses combinationUtil()  
-void printCombination(vector<int> arr, int n, int r) {  
+void computCombinaisons(vector<int> arr, int n, int r) {  
     // A temporary array to store
     // all combination one by one  
     vector<int> data(r);  
@@ -37,10 +37,10 @@ void combinationUtil(vector<int> arr, vector<int> data, int start, int end, int 
     if(index == r) {
         vector<int> tempVector;
         for(int j = 0; j < r; j++) {
-            cout << data.at(j) << " ";
+            //cout << data.at(j) << " ";
             tempVector.push_back(data.at(j));
         }
-        cout << endl;
+        //cout << endl;
         result.push_back(tempVector);
         return;
     }  
@@ -67,10 +67,79 @@ vector<int> nFirstNumber(vector<int> arr, int n) {
     return arrayModif;
 }
 
+// Print the current combinaisons, only for debugging
+void affCurrentCombinaisons() {
+    cout << "Result : {";
+    int i;
+    int j;
+    for(i = 0 ;  i < result.size()-1 ; i++) {
+        cout << "{";
+        for(j = 0 ; j < result.at(i).size()-1 ; j++) {
+            cout << result.at(i).at(j) << ",";
+        }
+        cout << result.at(i).at(j) << "},";
+    }
+    cout << "{";
+    for(j = 0 ; j < result.at(i).size()-1 ; j++) {
+        cout << result.at(i).at(j) << ",";
+    }
+    cout << result.at(i).at(j) << "}}" << endl;
+}
 
-// Driver code  
+
+
+float getAmountCovered(vector<int> arr, vector<int> arrayModif) {
+    int r; //Combinaison of r numbers  
+    int i;
+    int j;
+    
+    float finalSum;
+    float sum;
+    float tempSum;
+    
+    int addOrSub = 1;
+    
+    finalSum = 0;
+    for(r = 1 ; r <= arrayModif.size() ; r++) {
+        
+        //after this function, result store all the current combinaison of size r of the n first primal numbers
+        computCombinaisons(arr, arrayModif.size(), r);
+        affCurrentCombinaisons();
+        
+        sum = 0;
+        cout << "Sum = ";
+        //We sum all the 1/tempSum  
+        for(i = 0 ; i < result.size() ; i++) {
+            cout << "1/" << result.at(i).at(0);
+            tempSum = result.at(i).at(0); //Temp sum is the sum of all the element at index i
+            for(j = 1 ; j < result.at(i).size() ; j++) {
+                cout << "+" << result.at(i).at(j);
+                tempSum*= result.at(i).at(j);
+            }
+            //cout << "TempSum : " << tempSum;
+            sum = sum + (1/tempSum);
+            cout << " (Current sum = " << sum << ") + ";
+        }
+        cout << endl;
+        
+        //One in two, we need to subtract, and one in two, we need to add. This is done be multipling the sum by addOrSub which is either 1 or -1
+        sum = addOrSub*sum;
+        cout << "Sum : " << sum << endl;
+        addOrSub = addOrSub*(-1);
+        
+        finalSum += sum;
+        //We erase all data in the vector
+        result.erase(result.begin(), result.end());
+    }
+    
+    cout << "Somme totale en considérant les " << r-1 << " premiers nombre premiers : " << finalSum;
+}
+
+
+
+  
 int main() {  
-    vector<int> arr = {1,2,3,5,7,11,13,17};
+    vector<int> arr = {2,3,5,7,11,13,17};
     
     
     // Entering the number of primal number to consider
@@ -89,25 +158,13 @@ int main() {
     
     
     
-    int r = 2;  
-    //after this function, result store all the current combinaison of size r of the n first primal numbers
-    printCombination(arr, arrayModif.size(), r);
+    getAmountCovered(arr, arrayModif);
     
     
-    cout << "Result : {";
-    int j;
-    for(i = 0 ;  i < result.size()-1 ; i++) {
-        cout << "{";
-        for(j = 0 ; j < result.at(i).size()-1 ; j++) {
-            cout << result.at(i).at(j) << ",";
-        }
-        cout << result.at(i).at(j) << "},";
-    }
-    cout << "{";
-    for(j = 0 ; j < result.at(i).size()-1 ; j++) {
-        cout << result.at(i).at(j) << ",";
-    }
-    cout << result.at(i).at(j) << "}";
+    
+    
+    
+    
 }
   
 // This code is contributed by rathbhupendra 
